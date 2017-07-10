@@ -1,0 +1,42 @@
+module CorbaApp2
+{
+	struct Product{
+	    wstring name;
+	    long version;
+	    long stock;
+	    double price;
+	};
+	
+	struct OrderItem {
+        double price;
+        long quantity;
+        Product product;
+	};
+
+	typedef sequence <OrderItem,50> Orders;
+
+    struct Customer {
+        long customerId;
+        wstring fullName;
+        };
+
+	exception StockIsEmpty{
+	    wstring reason;
+	};
+
+	exception NoEnoughItems{
+        wstring reason;
+    };
+
+	interface ShoppingCart{
+	attribute Customer customer;
+	readonly attribute Orders orders;
+	void addToCart( in Product product, in long qty, in Customer cust)
+		raises(StockIsEmpty);
+	void removeFromCart( in Product product, in long qty, in Customer cust)
+    		raises(NoEnoughItems);
+	wstring sumItUp(in Customer cust);
+	void clear(in Customer cust);
+	};
+
+};
